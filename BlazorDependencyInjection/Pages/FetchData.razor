@@ -1,0 +1,49 @@
+﻿@page "/fetchdata"
+
+@using BlazorDependencyInjection.Data
+@inject IScopedService ScopedService1;
+@inject IScopedService ScopedService2;
+@inject ISingletonService SingletonService1;
+@inject ISingletonService SingletonService2;
+@inject ITransientService TransientService1;
+@inject ITransientService TransientService2;
+
+<div class="container">
+    
+    <h1>Press F5 on your browser</h1>
+
+    <h1>Singleton (Same across all requests)</h1>
+    <h3>1- @_singletonGuid1</h3>
+    <h3>2- @_singletonGuid2</h3>
+    <h1>Scoped (Same across current request)</h1>
+    <h3>1- @_scopedGuid1</h3>
+    <h3>2- @_scopedGuid2</h3>
+    <h1>Transient (Different across all requests)</h1>
+    <h3>1- @_transientGuid1</h3>
+    <h3>2- @_transientGuid2</h3>
+</div>
+
+@code {
+    private string _singletonGuid1 = null;
+    private string _singletonGuid2 = null;
+    private string _scopedGuid1 = null;
+    private string _scopedGuid2 = null;
+    private string _transientGuid1 = null;
+    private string _transientGuid2 = null;
+
+    protected override void OnInitialized()
+    {
+        RefreshToken();
+    }
+
+    public void RefreshToken()
+    {
+        _singletonGuid1 = SingletonService1.GetToken();
+        _singletonGuid2 = SingletonService2.GetToken();
+        _scopedGuid1 = ScopedService1.GetToken();
+        _scopedGuid2 = ScopedService2.GetToken();
+        _transientGuid1 = TransientService1.GetToken();
+        _transientGuid2 = TransientService2.GetToken();
+    }
+
+}
